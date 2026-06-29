@@ -19,7 +19,7 @@ st.divider()
 # ==========================
 # PROJECT SUMMARY
 # ==========================
-st.header("📌 Research Overview")
+st.header(" Research Overview")
 
 st.write("""
 This research focuses on the development of a machine learning-based decision support system for sales forecasting and customer purchase behaviour analysis using historical retail transaction data.
@@ -32,7 +32,7 @@ st.divider()
 # ==========================
 # OBJECTIVES
 # ==========================
-st.header("🎯 Research Objectives")
+st.header(" Research Objectives")
 
 st.markdown("""
 - Collect and preprocess historical retail sales data  
@@ -70,7 +70,7 @@ st.divider()
 # ==========================
 # METHODOLOGY
 # ==========================
-st.header("🧠 Methodology")
+st.header(" Methodology")
 
 st.markdown("""
 The project follows the CRISP-DM framework:
@@ -125,7 +125,7 @@ st.divider()
 # ==========================
 # BUSINESS IMPACT
 # ==========================
-st.header("📈 Business Impact")
+st.header(" Business Impact")
 
 st.success("""
 This system helps organizations to:
@@ -143,14 +143,14 @@ st.divider()
 # ==========================
 # RESEARCHER INFO
 # ==========================
-st.header("👩‍🎓 Researcher Information")
+st.header(" Researcher Information")
 
 st.markdown("""
 **Name:** Roseline Titilope Oni  
 **Matric Number:** LCU/PG/0010457  
 **Institution:** Lead City University  
 **Department:** Computer Science  
-**Level:** Postgraduate (PGD / MSc Track)  
+**Level:** Postgraduate (PGD / 600Level)  
 """)
 
 st.divider()
