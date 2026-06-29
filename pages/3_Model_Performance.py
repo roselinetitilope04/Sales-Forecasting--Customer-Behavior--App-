@@ -184,151 +184,119 @@ is explained by the selected business variables.
 st.divider()
 
 # =====================================================
-# SECTION 2
-# CUSTOMER BEHAVIOUR MODEL
+# K-MEANS CUSTOMER BEHAVIOUR MODEL PERFORMANCE
 # =====================================================
+
+st.divider()
 
 st.header("👥 Customer Purchase Behaviour Model (K-Means Clustering)")
 
-# Load models
-
-kmeans = joblib.load("models/customer_kmeans.pkl")
-
-scaler = joblib.load("models/customer_scaler.pkl")
-
-customer_features = joblib.load("models/customer_features.pkl")
-
 # Load customer dataset
-# Change filename if necessary
-
 customer_df = pd.read_csv("data/retail_sales_dataset.csv")
 
-X_customer = customer_df[customer_features]
+customer_df["transaction_date"] = pd.to_datetime(customer_df["transaction_date"])
 
-X_scaled = scaler.transform(X_customer)
+# -----------------------------------------------------
+# Recreate RFM Dataset
+# -----------------------------------------------------
 
-clusters = kmeans.predict(X_scaled)
+snapshot_date = customer_df["transaction_date"].max() + pd.Timedelta(days=1)
 
-customer_df["Cluster"] = clusters
-
-# =====================================================
-# Cluster Metrics
-# =====================================================
-
-sil_score = silhouette_score(
-    X_scaled,
-    clusters
+rfm = (
+    customer_df.groupby("customer_id")
+    .agg(
+        Recency=("transaction_date",
+                 lambda x: (snapshot_date - x.max()).days),
+        Frequency=("transaction_id", "count"),
+        Monetary=("sales_amount", "sum")
+    )
+    .reset_index()
 )
 
-c1, c2 = st.columns(2)
+# -----------------------------------------------------
+# Load trained model and scaler
+# -----------------------------------------------------
 
-c1.metric(
-    "Number of Customer Segments",
-    len(np.unique(clusters))
-)
+customer_model = joblib.load("models/customer_kmeans.pkl")
+customer_scaler = joblib.load("models/customer_scaler.pkl")
 
-c2.metric(
-    "Silhouette Score",
-    f"{sil_score:.3f}"
-)
+# Scale features
+X_customer = rfm[["Recency", "Frequency", "Monetary"]]
+X_scaled = customer_scaler.transform(X_customer)
 
-st.divider()
+# Predict clusters
+rfm["Cluster"] = customer_model.predict(X_scaled)
 
-# =====================================================
+# -----------------------------------------------------
 # Cluster Distribution
-# =====================================================
+# -----------------------------------------------------
 
-st.subheader("Customer Segment Distribution")
+st.subheader("Cluster Distribution")
 
-cluster_counts = customer_df["Cluster"].value_counts().sort_index()
+cluster_counts = (
+    rfm["Cluster"]
+    .value_counts()
+    .sort_index()
+)
 
 st.bar_chart(cluster_counts)
 
-st.dataframe(
-    cluster_counts.rename("Customers")
+st.dataframe(cluster_counts.rename("Customers"))
+
+# -----------------------------------------------------
+# Cluster Profiles
+# -----------------------------------------------------
+
+st.subheader("Average Customer Profile")
+
+cluster_profile = (
+    rfm.groupby("Cluster")[
+        ["Recency", "Frequency", "Monetary"]
+    ]
+    .mean()
+    .round(2)
 )
 
-st.divider()
+st.dataframe(cluster_profile, use_container_width=True)
 
-# =====================================================
-# Cluster Characteristics
-# =====================================================
-
-st.subheader("Customer Segment Summary")
-
-summary = customer_df.groupby("Cluster").mean(
-    numeric_only=True
-)
-
-st.dataframe(
-    summary,
-    use_container_width=True
-)
-
-st.divider()
-
-# =====================================================
+# -----------------------------------------------------
 # Interpretation
-# =====================================================
+# -----------------------------------------------------
 
-st.subheader("Model Interpretation")
+st.subheader("Business Interpretation")
 
-st.success("""
-The K-Means clustering model successfully grouped customers into **four distinct behavioural segments**.
+for cluster in sorted(rfm["Cluster"].unique()):
 
-These customer segments provide valuable business intelligence for:
+    profile = cluster_profile.loc[cluster]
 
-- Customer segmentation
-- Personalized marketing
-- Loyalty programmes
-- Product recommendations
-- Customer retention strategies
-- Promotional campaign planning
-""")
+    st.markdown(f"### Cluster {cluster}")
 
-st.info("""
-The Silhouette Score indicates how well customers fit into their assigned clusters.
-A higher score indicates better-defined customer segments.
-""")
+    st.write(
+        f"""
+**Average Recency:** {profile['Recency']:.1f} days
 
-st.divider()
+**Average Frequency:** {profile['Frequency']:.1f} purchases
 
-# =====================================================
-# RESEARCH CONCLUSION
-# =====================================================
+**Average Monetary Value:** ₦{profile['Monetary']:,.2f}
+"""
+    )
 
-st.header("📚 Overall Model Assessment")
+# -----------------------------------------------------
+# Cluster Scatter Plot
+# -----------------------------------------------------
 
-st.markdown(f"""
+st.subheader("Customer Segments")
 
-### Ridge Regression
+import plotly.express as px
 
-- Model Type: Supervised Learning
-- Purpose: Monthly Sales Forecasting
-- MAE: **{mae:,.2f}**
-- RMSE: **{rmse:,.2f}**
-- R² Score: **{r2:.3f}**
-
----
-
-### K-Means Clustering
-
-- Model Type: Unsupervised Learning
-- Purpose: Customer Purchase Behaviour Analysis
-- Number of Customer Segments: **{len(np.unique(clusters))}**
-- Silhouette Score: **{sil_score:.3f}**
-
----
-
-### Research Outcome
-
-The developed machine learning system integrates **Ridge Regression** for sales forecasting and **K-Means Clustering** for customer purchase behaviour analysis.
-
-Together, these models provide an intelligent decision-support system capable of forecasting future sales while simultaneously identifying meaningful customer segments for business strategy and marketing optimization.
-""")
-
-st.divider()
-
-st.caption(
-"© 2026 Roseline Titilope Oni | Lead City University | Development of a Sales Forecasting and Customer Purchase Behaviour Analysis Model Using Machine Learning"
+fig = px.scatter(
+    rfm,
+    x="Frequency",
+    y="Monetary",
+    color=rfm["Cluster"].astype(str),
+    size="Monetary",
+    hover_data=["Recency"],
+    title="Customer Segments"
 )
+
+st.plotly_chart(fig, width="stretch")
