@@ -1,7 +1,13 @@
 import streamlit as st
 
-st.set_page_config(page_title="About the Research", page_icon="📖")
+# ==========================
+# PAGE CONFIG
+# ==========================
+st.set_page_config(page_title="About the Research", page_icon="📖", layout="wide")
 
+# ==========================
+# TITLE
+# ==========================
 st.title("📖 About the Research")
 
 st.markdown("""
@@ -10,132 +16,154 @@ st.markdown("""
 
 st.divider()
 
-st.header("Research Overview")
+# ==========================
+# PROJECT SUMMARY
+# ==========================
+st.header("📌 Research Overview")
 
 st.write("""
-This research presents the development of a machine learning-based model for forecasting future sales and analysing customer purchase behaviour using historical retail transaction data.
+This research focuses on the development of a machine learning-based decision support system for sales forecasting and customer purchase behaviour analysis using historical retail transaction data.
 
-The study integrates data preprocessing, exploratory data analysis, feature engineering, customer segmentation, machine learning, and business intelligence to generate actionable insights that support strategic decision-making.
+The project combines predictive analytics and customer segmentation to support business decision-making, improve sales planning, and enhance customer understanding.
 """)
 
 st.divider()
 
-st.header("Research Objectives")
+# ==========================
+# OBJECTIVES
+# ==========================
+st.header("🎯 Research Objectives")
 
 st.markdown("""
-- Collect, clean and preprocess historical sales data.
-- Analyse historical sales trends.
-- Develop a machine learning model for sales forecasting.
-- Analyse customer purchase behaviour.
-- Segment customers based on purchasing characteristics.
-- Identify high-value customer segments.
-- Evaluate model performance using MAE, RMSE and R².
-- Generate business recommendations for decision makers.
+- Collect and preprocess historical retail sales data  
+- Perform exploratory data analysis (EDA)  
+- Engineer predictive features for machine learning models  
+- Develop a **Sales Forecasting model using Ridge Regression**  
+- Segment customers using **K-Means Clustering**  
+- Analyse customer purchase behaviour patterns  
+- Identify high-value customer groups  
+- Evaluate model performance using MAE, RMSE, and R²  
+- Provide business insights and recommendations  
 """)
 
 st.divider()
 
-st.header("Methodology")
+# ==========================
+# MODELS USED
+# ==========================
+st.header("🤖 Machine Learning Models Used")
 
 st.markdown("""
-The project followed the CRISP-DM framework:
+### 1. Ridge Regression (Sales Forecasting Model)
+- Used for predicting future monthly sales
+- Handles multicollinearity in features using L2 regularization
+- Provides stable and interpretable predictions
 
-1. Business Understanding
-2. Data Understanding
-3. Data Preparation
-4. Exploratory Data Analysis
-5. Feature Engineering
-6. Machine Learning Model Development
-7. Model Evaluation
-8. Business Recommendations
-9. Application Deployment
+### 2. K-Means Clustering (Customer Behaviour Model)
+- Used to segment customers based on purchasing behaviour
+- Groups customers into clusters such as high-value, medium-value, and low-value segments
+- Helps businesses understand customer patterns and targeting strategies
 """)
 
 st.divider()
 
-st.header("Machine Learning Model")
+# ==========================
+# METHODOLOGY
+# ==========================
+st.header("🧠 Methodology")
 
 st.markdown("""
-**Algorithm Used**
+The project follows the CRISP-DM framework:
 
-- Ridge Regression
-
-**Evaluation Metrics**
-
-- Mean Absolute Error (MAE)
-- Root Mean Squared Error (RMSE)
-- R² Score
-
-The Ridge Regression model was selected because it provided strong predictive performance while reducing overfitting through regularization.
+1. Business Understanding  
+2. Data Understanding  
+3. Data Cleaning & Preprocessing  
+4. Exploratory Data Analysis (EDA)  
+5. Feature Engineering  
+6. Model Development (Ridge Regression + K-Means)  
+7. Model Evaluation  
+8. Interpretation of Results  
+9. Deployment using Streamlit  
 """)
 
 st.divider()
 
-st.header("Technologies Used")
+# ==========================
+# EVALUATION
+# ==========================
+st.header("📊 Model Evaluation Metrics")
 
 st.markdown("""
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-- Matplotlib
-- Streamlit
-- Joblib
+**Sales Forecasting Model (Ridge Regression):**
+- Mean Absolute Error (MAE)  
+- Root Mean Squared Error (RMSE)  
+- R² Score  
+
+**Customer Segmentation Model (K-Means):**
+- Elbow Method (Inertia)  
+- Cluster Interpretation  
 """)
 
 st.divider()
 
-st.header("Business Impact")
+# ==========================
+# TECHNOLOGIES
+# ==========================
+st.header("💻 Technologies Used")
+
+st.markdown("""
+- Python  
+- Pandas & NumPy  
+- Scikit-learn  
+- Matplotlib & Plotly  
+- Streamlit  
+- Joblib  
+""")
+
+st.divider()
+
+# ==========================
+# BUSINESS IMPACT
+# ==========================
+st.header("📈 Business Impact")
 
 st.success("""
-The developed application enables organizations to:
+This system helps organizations to:
 
-• Forecast future sales
-
-• Improve inventory planning
-
-• Identify valuable customers
-
-• Support marketing decisions
-
-• Improve customer retention
-
-• Optimize promotional campaigns
-
-• Support data-driven decision making
+• Forecast future sales accurately  
+• Improve inventory planning  
+• Identify profitable customer segments  
+• Enhance marketing targeting strategies  
+• Improve customer retention  
+• Support data-driven decision-making  
 """)
 
 st.divider()
 
-st.header("Researcher")
+# ==========================
+# RESEARCHER INFO
+# ==========================
+st.header("👩‍🎓 Researcher Information")
 
 st.markdown("""
-**Roseline Titilope Oni**
-
-Postgraduate Researcher
-
-Lead City University
-
-Department of Computer Science
-
-Specialization:
-- Data Science
-- Machine Learning
-- Predictive Analytics
+**Name:** Roseline Titilope Oni  
+**Matric Number:** LCU/PG/0010457  
+**Institution:** Lead City University  
+**Department:** Computer Science  
+**Level:** Postgraduate (PGD / MSc Track)  
 """)
 
 st.divider()
 
+# ==========================
+# FINAL NOTE
+# ==========================
 st.info("""
-This application accompanies the research project titled:
+This application is part of a postgraduate research project titled:
 
 **Development of a Sales Forecasting and Customer Purchase Behaviour Analysis Model Using Machine Learning**
 
-The application demonstrates how machine learning can support sales forecasting and customer behaviour analysis through an interactive decision-support system.
+It demonstrates how machine learning can be applied to real-world business forecasting and customer segmentation.
 """)
 
-st.divider()
-
-st.caption(
-    "© 2026 Roseline Titilope Oni | Sales Forecasting using Machine Learning"
-)
+st.caption("© 2026 Roseline Titilope Oni | Sales Forecasting & Customer Analytics System")
